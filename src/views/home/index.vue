@@ -46,17 +46,21 @@
       <el-header class="home-header">
         <span class="el-icon-s-fold" style="font-size: 30px; vertical-align: middle"></span>
         <span>江苏传智播客科技教育有限公司</span>
-        <el-dropdown style="float: right">
-          <img src="../../assets/images/avatar.jpg" alt style="vertical-align: middle" />
+
+        <el-dropdown style="float: right" @command = "handleCommand">
+          <img :src="avatar" alt style="vertical-align: middle; width: 50px" />
           <span class="el-dropdown-link">
-            黑马小哥
+            {{name}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-plus">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-setting">退出登录</el-dropdown-item>
+            <!-- <el-dropdown-item icon="el-icon-plus" command="setting" @click.native="setting">个人设置</el-dropdown-item> -->
+            <el-dropdown-item icon="el-icon-plus" command="setting" >个人设置</el-dropdown-item>
+            <!-- <el-dropdown-item icon="el-icon-setting" command="logot"  @click.native="logout">退出登录</el-dropdown-item> -->
+            <el-dropdown-item icon="el-icon-setting" command="logot" >退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+
       </el-header>
       <el-main class="home-main">
         <router-view></router-view>
@@ -66,7 +70,31 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      avatar: '',
+      name: ''
+    }
+  },
+  created () {
+    const user = JSON.parse(sessionStorage.getItem('token'))
+    this.avatar = user.photo
+    this.name = user.name
+  },
+  methods: {
+    handleCommand (command) {
+      this[command]()
+    },
+    setting () {
+      this.$router.push('/setting')
+    },
+    logout () {
+      sessionStorage.removeItem('token')
+      this.$router.push('/login')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

@@ -4,7 +4,7 @@
       <div style="margin-bottom: 30px">
         <img src="../../assets/images/logo_index.png" alt width="300" />
       </div>
-      <el-form :rules="rules" status-icon :model="LoginForm" ref="LoginForm" >
+      <el-form :rules="rules" status-icon :model="LoginForm" ref="LoginForm">
         <el-form-item prop="mobile">
           <el-input placeholder="请输入手机号" v-model="LoginForm.mobile"></el-input>
         </el-form-item>
@@ -44,22 +44,35 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.LoginForm.validate(valid => {
+      // this.$refs.LoginForm.validate(valid => {
+      //   if (valid) {
+      //     this.$http
+      //       .post(
+      //         'authorizations',
+      //         this.LoginForm
+      //       )
+      //       .then(res => {
+      //         console.log(789)
+      //         sessionStorage.setItem('token', JSON.stringify(res.data.data))
+      //         this.$router.push('/')
+      //       })
+      //       .catch(err => {
+      //         console.log(213)
+      //         console.log(err)
+      //       })
+      //   }
+      // })
+
+      this.$refs.LoginForm.validate(async valid => {
         if (valid) {
-          this.$http
-            .post(
-              'authorizations',
-              this.LoginForm
-            )
-            .then(res => {
-              console.log(789)
-              sessionStorage.setItem('token', JSON.stringify(res.data.data.token))
-              this.$router.push('/')
-            })
-            .catch(err => {
-              console.log(213)
-              console.log(err)
-            })
+          try {
+            const res = await this.$http.post('authorizations', this.LoginForm)
+            sessionStorage.setItem('token', JSON.stringify(res.data.data))
+            console.log(res)
+            this.$router.push('/')
+          } catch (err) {
+            console.log(err)
+          }
         }
       })
     }

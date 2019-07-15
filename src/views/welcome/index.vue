@@ -7,7 +7,9 @@
 
 <script>
 export default {
-
+  created () {
+    this.$http.get('articles').then()
+  }
 }
 </script>
 

@@ -4,6 +4,7 @@ import login from '@/views/login'
 import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/NotFound'
+import Article from '@/views/article'
 Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [{
@@ -19,17 +20,23 @@ const router = new VueRouter({
       name: 'welcome',
       path: '/',
       component: Welcome
-    }]
+    },
+    {
+      name: 'article',
+      path: '/article',
+      component: Article
+    }
+    ]
   },
   {
     name: 'NotFound',
     path: '*',
     component: NotFound
   }
+
   ]
 })
 router.beforeEach((to, from, next) => {
-  console.log(to)
   if (to.path === '/login') {
     return next()
   }
